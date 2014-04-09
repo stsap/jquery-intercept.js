@@ -1,0 +1,34 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="./lib/jquery-intercept.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#target").on("click", function () { alert("first action!"); return false; });
+    $("#target").on("click", function () { alert("second action!"); return false; });
+
+    var interceptor = function (event) {
+        alert("I am a No.1!");
+        // do not run the original events.
+        event.stopImmediatePropagation();
+        return false;
+    };
+   
+    $("#switch").on("click", function () {
+        $("#target").intercept("click", interceptor);
+        alert("target action switched.");
+        return false;
+    });
+    $("#off").on("click", function () {
+        $("#target").off("click", interceptor);
+        alert("end intercept.");
+    });
+});
+</script>
+</head>
+<body>
+<p><a id="target" href="">target</a></p>
+<p><a id="switch" href="">intercept!</a></p>
+<p><a id="off" href="">intercept end</a></p>
+</body>
+</html>
